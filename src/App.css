@@ -11,3 +11,8 @@
 #root{
     background-color: black;
 }
+
+.create-post{
+    width: 80%;
+    margin-left: 10% ;
+}
