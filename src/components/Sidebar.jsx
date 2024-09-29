@@ -1,4 +1,5 @@
 import React from "react";
+import { TiSocialTwitter } from "react-icons/ti";
 const Sidebar = ({ setSelectedTab, selectedTab }) => {
   return (
     <div
@@ -12,7 +13,10 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
         <svg className="bi pe-none me-2" width="40" height="32">
           <use xlinkHref="#bootstrap"></use>
         </svg>
-        <span className="fs-4">Sidebar</span>
+        <span className="fs-4">
+          {" "}
+          <TiSocialTwitter /> SocialBird
+        </span>
       </a>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
