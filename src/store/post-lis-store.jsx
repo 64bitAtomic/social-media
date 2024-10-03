@@ -1,8 +1,8 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 export const PostList = createContext({
   postList: [],
+  fetching: false,
   addPost: () => {},
-  addInitialPosts: () => {},
   deletePost: () => {},
 });
 const postListReducer = (currPostList, action) => {
@@ -20,17 +20,12 @@ const postListReducer = (currPostList, action) => {
 };
 const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(postListReducer, []);
-  const addPost = (userId, postTitle, postBody, reactions, tags) => {
+  const [fetching, setFetching] = useState(false);
+
+  const addPost = (post) => {
     dispatchPostList({
       type: "ADD_POST",
-      payload: {
-        id: Date.now(),
-        title: postTitle,
-        body: postBody,
-        reaction: reactions,
-        userId: userId,
-        tags: tags,
-      },
+      payload: post,
     });
   };
   const addInitialPosts = (posts) => {
@@ -47,10 +42,33 @@ const PostListProvider = ({ children }) => {
       payload: { postId },
     });
   };
+  useEffect(() => {
+    setFetching(true);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch("https://dummyjson.com/posts", { signal })
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPosts(data.posts);
+        setFetching(false);
+      })
+      .catch((error) => {
+        if (error.name === "AbortError") {
+          // Fetch was aborted, no need to do anything here
+          console.log("Fetch aborted");
+        } else {
+          // Handle other errors
+          console.error("Fetch error:", error);
+          setFetching(false);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
   return (
-    <PostList.Provider
-      value={{ postList, addPost, deletePost, addInitialPosts }}
-    >
+    <PostList.Provider value={{ postList, fetching, addPost, deletePost }}>
       {children}
     </PostList.Provider>
   );
