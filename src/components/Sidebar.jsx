@@ -1,8 +1,9 @@
-import React from "react";
-import { BsFillHSquareFill } from "react-icons/bs";
+import React, { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
-const Sidebar = ({ setSelectedTab, selectedTab }) => {
+import { Link } from "react-router-dom";
+const Sidebar = () => {
+  const [selectedTab, setSelectedTab] = useState("Home");
   return (
     <div
       className="d-flex flex-column flex-shrink-0 bg-dark"
@@ -26,9 +27,9 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
       </a>
       <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li className="nav-item">
-          <a
+          <Link
             onClick={() => setSelectedTab("Home")}
-            href="#"
+            to="/"
             className={`nav-link py-3 border-bottom rounded-0 ${
               selectedTab === "Home" && "active"
             }`}
@@ -39,12 +40,12 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
             data-bs-original-title="Home"
           >
             <FaHome />
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             onClick={() => setSelectedTab("CreatePost")}
-            href="#"
+            to="/create-post"
             className={`nav-link py-3 border-bottom rounded-0 ${
               selectedTab === "CreatePost" && "active"
             }`}
@@ -54,7 +55,7 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
             data-bs-original-title="Dashboard"
           >
             <FiSend />
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

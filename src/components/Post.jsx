@@ -3,7 +3,6 @@ import { MdDelete } from "react-icons/md";
 import { PostList } from "../store/post-lis-store";
 const Post = ({ post }) => {
   const { deletePost } = useContext(PostList);
-
   return (
     <div className="card text-white bg-dark my-3" style={{ width: "18rem" }}>
       <div className="card-body">
@@ -24,7 +23,7 @@ const Post = ({ post }) => {
         ))}
       </div>
       <div className="alert alert-success m-2 mb-3" role="alert">
-        This post has been reacted by {post.reaction} people.
+        This post has been reacted by {post.views} people.
       </div>
     </div>
   );

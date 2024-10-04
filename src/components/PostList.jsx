@@ -3,29 +3,32 @@ import Post from "./Post";
 import { PostList as PostListData } from "../store/post-lis-store";
 import WelcomeMessage from "./WelcomeMessage";
 import Loading from "./Loading";
-const PostList = ({ fetching }) => {
-  const { postList, addInitialPosts } = useContext(PostListData);
+import { useLoaderData } from "react-router-dom";
+const PostList = () => {
+  const postList = useLoaderData();
 
   const handleGetPostClick = () => {
-    fetch("https://dummyjson.com/posts")
-      .then((res) => res.json())
-      .then((data) => {
-        addInitialPosts(data.posts);
-      });
+    return postList;
   };
 
   return (
     <>
       <div>
-        {fetching && <Loading />}
-        {!fetching && postList.length === 0 && (
+        {postList.length === 0 && (
           <WelcomeMessage onGetPostClick={handleGetPostClick} />
         )}
-        {!fetching &&
-          postList.map((post) => <Post key={post.id} post={post} />)}
+        {postList.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
       </div>
     </>
   );
+};
+
+export const postLoader = async () => {
+  return await fetch("https://dummyjson.com/posts")
+    .then((res) => res.json())
+    .then((data) => data.posts);
 };
 
 export default PostList;
